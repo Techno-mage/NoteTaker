@@ -25,7 +25,7 @@ function loadFile(){
 }
 
 var notes = loadFile();
-
+console.log(notes)
 
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "public/index.html"));
@@ -37,7 +37,7 @@ app.get("/notes", function (req, res) {
 });
 
 app.get("/api/notes", function(req, res) {
-    var notes = loadFile();
+    //var notes = loadFile();
     console.log("sending notes: " + notes)
     res.json(JSON.parse(notes))
     res.end()
@@ -46,7 +46,6 @@ app.get("/api/notes", function(req, res) {
 
 
 app.listen(PORT, function () {
-    notes =loadFile();
     
     console.log("App listening on PORT " + PORT);
 });
