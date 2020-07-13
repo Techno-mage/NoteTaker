@@ -46,6 +46,15 @@ var noteHandler = {
         this.notes = JSON.parse(output)
     },
 
+    saveNotes(){
+        fs.writeFileSync(__dirname+"/db/db.json",JSON.stringify(this.notes), (err) =>{
+            if (err){
+                return err;
+            }
+
+        })
+    },
+
     newNote(title, text){
         this.notes.push({
             title:title, text:text, id: String(Date.now())
@@ -64,7 +73,7 @@ var noteHandler = {
 }
 
 noteHandler.loadNotes();
-noteHandler.newNote("NewTitle","NewNote")
+
 //noteHandler.deleteNote("3123")
 //var time = String(Date.now())
 //console.log(time)
@@ -90,13 +99,15 @@ app.get("/api/notes", function(req, res) {
 app.post("/api/notes", function(req, res) {
     console.log(req.body)
     noteHandler.newNote(req.body.title, req.body.text);
-    res.json(req.body);
+    noteHandler.saveNotes();
+    res.json(req.body);    
     res.end;
 })
 
 app.delete("/api/notes/:itemId", function(req, res) {
     console.log(req.params)
     noteHandler.deleteNote(req.params.itemId)
+    noteHandler.saveNotes();
     res.json(req.params.itemId)
     res.end;
 })
