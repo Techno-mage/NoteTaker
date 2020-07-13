@@ -50,6 +50,14 @@ var noteHandler = {
         this.notes.push({
             title:title, text:text, id:id
         })
+    },
+
+    deleteNote(id){
+        for (var i = 0; i < this.notes.length; i++){
+            if (this.notes[i].id === id){
+                return this.notes.splice(i,1);
+            }
+        }
     }
 
 
@@ -57,6 +65,7 @@ var noteHandler = {
 
 noteHandler.loadNotes();
 noteHandler.newNote("NewTitle","NewNote","8739")
+noteHandler.deleteNote("3123")
 
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "public/index.html"));
