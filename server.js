@@ -46,9 +46,9 @@ var noteHandler = {
         this.notes = JSON.parse(output)
     },
 
-    newNote(title, text, id){
+    newNote(title, text){
         this.notes.push({
-            title:title, text:text, id:id
+            title:title, text:text, id: String(Date.now())
         })
     },
 
@@ -64,8 +64,11 @@ var noteHandler = {
 }
 
 noteHandler.loadNotes();
-noteHandler.newNote("NewTitle","NewNote","8739")
-noteHandler.deleteNote("3123")
+noteHandler.newNote("NewTitle","NewNote")
+//noteHandler.deleteNote("3123")
+//var time = String(Date.now())
+//console.log(time)
+//console.log(typeof time)
 
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "public/index.html"));
@@ -84,6 +87,19 @@ app.get("/api/notes", function(req, res) {
 
 });
 
+app.post("/api/notes", function(req, res) {
+    console.log(req.body)
+    noteHandler.newNote(req.body.title, req.body.text);
+    res.json(req.body);
+    res.end;
+})
+
+app.delete("/api/notes/:itemId", function(req, res) {
+    console.log(req.params)
+    noteHandler.deleteNote(req.params.itemId)
+    res.json(req.params.itemId)
+    res.end;
+})
 
 app.listen(PORT, function () {
     
